@@ -7,10 +7,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Redis.Cache.Sample.Services.Base;
 using Redis.Cache.Sample.Services.MemoryCache;
+using Redis.Cache.Sample.Services.RedisCache;
+using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Redis.Cache.Sample
@@ -28,7 +32,13 @@ namespace Redis.Cache.Sample
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IMemoryCacheService, MemoryCacheService>();
+            services.AddSingleton<IRedisCacheService, RedisCacheService>();
             services.AddMemoryCache();
+
+            services.AddSingleton<IConnectionMultiplexer>(cm =>
+            {
+                return ConnectionMultiplexer.Connect("localhost:6379");
+            });
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
