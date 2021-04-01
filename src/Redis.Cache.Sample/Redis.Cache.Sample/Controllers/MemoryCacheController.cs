@@ -34,7 +34,7 @@ namespace Redis.Cache.Sample.Controllers
         [HttpGet("{key}")]
         public ActionResult<string> DeleteCacheValue(string key)
         {
-            _memoryCacheService.RemoveValue(key)
+            _memoryCacheService.RemoveValue(key);
             return Ok();
         }
     }
