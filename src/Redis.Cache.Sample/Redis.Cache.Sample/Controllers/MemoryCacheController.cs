@@ -19,22 +19,22 @@ namespace Redis.Cache.Sample.Controllers
         }
 
         [HttpPost("{key}")]
-        public ActionResult AddCacheVAlue(string key, [FromBody]string value)
+        public async Task<ActionResult> AddCacheVAlue(string key, [FromBody] string value)
         {
-            _memoryCacheService.SetValue(key, value);
+            await _memoryCacheService.SetValue(key, value);
             return Ok();
         }
 
         [HttpGet("{key}")]
-        public ActionResult<string> GetCacheValue(string key)
+        public async Task<ActionResult<string>> GetCacheValue(string key)
         {
-            return Ok(_memoryCacheService.GetValue<string>(key));
+            return Ok(await _memoryCacheService.GetValue<string>(key));
         }
 
-        [HttpGet("{key}")]
-        public ActionResult<string> DeleteCacheValue(string key)
+        [HttpDelete("{key}")]
+        public async Task<ActionResult<string>> DeleteCacheValue(string key)
         {
-            _memoryCacheService.RemoveValue(key);
+            await _memoryCacheService.RemoveValue(key);
             return Ok();
         }
     }
